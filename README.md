@@ -2,7 +2,7 @@
 
 This is a simple SVG worm game based on the Fable.Elmish.React template.
 
-![mato in action]()
+![mato in action](https://github.com/tatut/matofs/raw/master/mato.gif)
 
 ## Building and running the app
 
