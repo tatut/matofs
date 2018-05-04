@@ -8,20 +8,18 @@ type Direction =
     | Left
     | Right
 
-
 type Msg =
-  | ChangeDirection of Direction
-  | Update
-  | StartGame
+    | ChangeDirection of Direction
+    | Update
+    | StartGame
 
-type GameState = {
-  worm: Pos list
-  direction: Direction
-  length: int
-  food: Pos
-}
+type GameState = 
+    { Worm: Pos list
+      Direction: Direction
+      Length: int
+      Food: Pos }
  
 type Model =
-  | NotStarted 
-  | Game of GameState
-  | GameOver of int
+    | NotStarted 
+    | Game of GameState
+    | GameOver of int
