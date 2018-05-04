@@ -8,7 +8,7 @@ open MatoFS.Constants
 module P = Fable.Helpers.React.Props
 
 let inline wormPos (Pos (x,y)) =
-    rect [P.Key (x.ToString() + "_" + y.ToString())
+    rect [P.Key (sprintf "%i_%i" x y)
           P.Fill "red"
           P.Width width
           P.Height height
@@ -17,7 +17,7 @@ let inline wormPos (Pos (x,y)) =
 
 let wormPositions (positions: Pos list) =
     g []
-      [for p in positions do yield wormPos p]
+      [for p in positions -> wormPos p]
 
 let food (Pos (x, y)) = 
     circle [P.Key "food"
@@ -26,7 +26,8 @@ let food (Pos (x, y)) =
             P.Cx (x*width + width/2)
             P.Cy (y*height + height/2)] []
 
-let score { length = len } = (len - initialLength) * scorePerLength
+let score state = 
+    (state.Length - initialLength) * scorePerLength
 
 let gameView model _ =
     match model with
@@ -36,6 +37,6 @@ let gameView model _ =
         div [ ]
             [ svg [P.Width (width * gameWidth)
                    P.Height (height * gameHeight)]
-                  [ wormPositions gs.worm 
-                    food gs.food]
+                  [ wormPositions gs.Worm 
+                    food gs.Food]
               div [] [str ("Score: " + string (score gs))] ]

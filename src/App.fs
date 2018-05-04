@@ -1,34 +1,34 @@
 module App
 
-open Elmish
 open Fable.Core.JsInterop
 open Fable.Import.Browser
+open Elmish
+open Elmish.React
 open MatoFS.Types
 open MatoFS.State
 open MatoFS.View
 
-open Elmish.React
-
-let keyDirection = function
-    | "ArrowLeft" -> Some Left
-    | "ArrowRight" -> Some Right
-    | "ArrowUp" -> Some Up
-    | "ArrowDown" -> Some Down
+let (|ArrowKey|_|) keyCode =
+    match keyCode with
+    | 37 -> Some Left
+    | 39 -> Some Right
+    | 38 -> Some Up
+    | 40 -> Some Down
     | _ -> None
+
+let (|SpaceKey|_|) keyCode = 
+    if keyCode = 32 then Some () else None
 
 let timerAndKeyboard _ =
     let sub dispatch =
         window.setInterval ((fun _ -> dispatch Update), 100) |> ignore
         let handler = fun e ->
-            if !!e?key = " " then
-                dispatch StartGame |> ignore
-            else 
-                match keyDirection !!e?key with
-                | Some d -> dispatch (ChangeDirection d) |> ignore
-                | None -> None |> ignore
-        window.addEventListener("keydown", unbox handler ) |> ignore
+            match !!e?keyCode with
+            | ArrowKey d -> dispatch (ChangeDirection d) |> ignore
+            | SpaceKey -> dispatch StartGame |> ignore
+            | _ -> None |> ignore
+        window.addEventListener("keydown", unbox handler) |> ignore
     Cmd.ofSub sub
-
 
 // App
 Program.mkProgram init update gameView
